@@ -2,6 +2,11 @@ table {
   width: 100vw;
 }
 
+.mat-column-title, .mat-column-description, .mat-column-status,
+.mat-column-category, .mat-column-date-added, .mat-column-date-completed,
+.mat-column-assigned-by, .mat-column-assigned-to{}
+
+
 .mat-column-title{}
 .mat-column-description{}
 .mat-column-status{}
@@ -10,3 +15,30 @@ table {
 .mat-column-date-completed{}
 .mat-column-assigned-by{}
 .mat-column-assigned-to{}
+
+
+/*COMPONENT STRUCTURE*/
+.todo-table-wrapper{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  width: 100%;
+  padding:16px 0;
+}
+
+.todo-table-wrapper > * { width: 100%}
+
+.todo-table-header{
+  padding: 16px;
+  flex-basis: 3%;
+}
+.todo-table{
+  flex-basis: 94%;
+  overflow-y: auto;
+}
+.todo-table-footer{
+  flex-basis: 3%;
+  padding-bottom: 16px;
+  background-color: gray;
+  border-top: solid black 2px;
+}
