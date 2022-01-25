@@ -1,13 +1,26 @@
-import { Component } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { todos } from '../../../data'
 import { TodoTableDataSource } from './todo-table-data-source'
+import { TodosService } from '../../services/todos.service'
+import { ITodo } from '../../../interfaces/ITodo'
 
 @Component({
   selector: 'app-todo-table',
   templateUrl: './todo-table.component.html',
   styleUrls: ['./todo-table.component.css'],
 })
-export class TodoTableComponent {
+export class TodoTableComponent implements OnInit {
+  dataToDisplay: ITodo[] = []
+  dataSource!: TodoTableDataSource
+  constructor(private todosService: TodosService) {}
+
+  ngOnInit() {
+    this.todosService.listTodos().subscribe((data: any) => {
+      this.dataToDisplay = data.data
+      this.dataSource = new TodoTableDataSource(this.dataToDisplay)
+    })
+  }
+
   displayedColumns: string[] = [
     'title',
     'description',
@@ -18,9 +31,6 @@ export class TodoTableComponent {
     'assigned-by',
     'assigned-to',
   ]
-  dataToDisplay = todos
-
-  dataSource = new TodoTableDataSource(this.dataToDisplay)
 
   addDataTemp() {
     const randomElementIndex = Math.floor(Math.random() * todos.length)
