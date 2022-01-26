@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core'
-import { todos } from '../../../data'
 import { TodoTableDataSource } from './todo-table-data-source'
 import { TodosService } from '../../services/todos.service'
 import { ITodo } from '../../../interfaces/ITodo'
@@ -15,10 +14,7 @@ export class TodoTableComponent implements OnInit {
   constructor(private todosService: TodosService) {}
 
   ngOnInit() {
-    this.todosService.listTodos().subscribe((data: any) => {
-      this.dataToDisplay = data.data
-      this.dataSource = new TodoTableDataSource(this.dataToDisplay)
-    })
+    this.loadTodos()
   }
 
   displayedColumns: string[] = [
@@ -32,10 +28,17 @@ export class TodoTableComponent implements OnInit {
     'assigned-to',
   ]
 
-  addDataTemp() {
-    const randomElementIndex = Math.floor(Math.random() * todos.length)
-    this.dataToDisplay = [...this.dataToDisplay, todos[randomElementIndex]]
-    this.dataSource.setData(this.dataToDisplay)
+  loadTodos() {
+    this.todosService.listTodos().subscribe((data: any) => {
+      this.dataToDisplay = data.data
+      this.dataSource = new TodoTableDataSource(this.dataToDisplay)
+    })
+  }
+
+  addRandomTodo() {
+    this.todosService.createTodo().subscribe(() => {
+      this.loadTodos()
+    })
   }
 
   removeDataTemp() {
