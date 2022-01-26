@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core'
 import { TodoTableDataSource } from './todo-table-data-source'
 import { TodosService } from '../../services/todos.service'
 import { ITodo } from '../../../interfaces/ITodo'
+import { v4 as uuidV4 } from 'uuid'
+import { EStatuses } from '../../../enums/EStatuses'
+import { ECategories } from '../../../enums/ECategories'
+import moment from 'moment'
 
 @Component({
   selector: 'app-todo-table',
@@ -36,13 +40,47 @@ export class TodoTableComponent implements OnInit {
   }
 
   addRandomTodo() {
-    this.todosService.createTodo().subscribe(() => {
+    const randomTodo = {
+      id: uuidV4(),
+      title: 'randomly created',
+      description: 'randomly described',
+      status: EStatuses.DONE,
+      category: ECategories.SMALL,
+      dateAdded: moment().toString(),
+      dateCompleted: moment().toString(),
+      assigned: { name: 'simon', email: 'simon@email.com' },
+      assignee: { name: 'mike', email: 'mike@email.com' },
+    }
+    this.todosService.createTodo(randomTodo).subscribe(() => {
       this.loadTodos()
     })
   }
 
-  removeDataTemp() {
-    this.dataToDisplay = this.dataToDisplay.slice(0, -1)
-    this.dataSource.setData(this.dataToDisplay)
+  removeRandomTodo() {
+    const randomTodo =
+      this.dataToDisplay[Math.floor(Math.random() * this.dataToDisplay.length)]
+    this.todosService.deleteTodo(randomTodo.id!).subscribe(() => {
+      this.loadTodos()
+    })
+  }
+
+  updateRandomTodo() {
+    const randomTodoId =
+      this.dataToDisplay[Math.floor(Math.random() * this.dataToDisplay.length)]
+        .id
+    const randomTodo = {
+      id: randomTodoId,
+      title: 'randomly updated',
+      description: 'randomly described',
+      status: EStatuses.IN_PROGRESS,
+      category: ECategories.SMALL,
+      dateAdded: moment().toString(),
+      dateCompleted: moment().toString(),
+      assigned: { name: 'simon', email: 'simon@email.com' },
+      assignee: { name: 'mike', email: 'mike@email.com' },
+    }
+    this.todosService.updateTodo(randomTodo).subscribe(() => {
+      this.loadTodos()
+    })
   }
 }

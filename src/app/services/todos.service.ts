@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
-import { v4 as uuidV4 } from 'uuid'
-import { EStatuses } from '../../enums/EStatuses'
-import { ECategories } from '../../enums/ECategories'
-import moment from 'moment'
+import { ITodo } from '../../interfaces/ITodo'
 
 @Injectable({
   providedIn: 'root',
@@ -18,24 +15,19 @@ export class TodosService {
     return this.http.get(`${this.apiURL}/todos`)
   }
 
-  createTodo(): Observable<any> {
-    return this.http.post(
-      `${this.apiURL}/todos`,
-      this.temporaryCreateRandomTodo()
-    )
+  getTodo(id: string): Observable<any> {
+    return this.http.get(`${this.apiURL}/todos/${id}`)
   }
 
-  temporaryCreateRandomTodo(): any {
-    return {
-      id: uuidV4(),
-      title: 'randomly created',
-      description: 'randomly described',
-      status: EStatuses.DONE,
-      category: ECategories.SMALL,
-      dateAdded: moment(),
-      dateCompleted: moment(),
-      assigned: { name: 'simon', email: 'simon@email.com' },
-      assignee: { name: 'mike', email: 'mike@email.com' },
-    }
+  createTodo(todo: ITodo): Observable<any> {
+    return this.http.post(`${this.apiURL}/todos`, todo)
+  }
+
+  deleteTodo(id: string): Observable<any> {
+    return this.http.delete(`${this.apiURL}/todos/${id}`)
+  }
+
+  updateTodo(todo: ITodo): Observable<any> {
+    return this.http.put(`${this.apiURL}/todos`, todo)
   }
 }
