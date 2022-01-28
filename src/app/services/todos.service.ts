@@ -9,10 +9,6 @@ import { ITodo } from '../../interfaces/ITodo'
 export class TodosService {
   constructor(private http: HttpClient) {}
 
-  // local-setup
-  // apiURL = 'http://localhost:5000/api'
-
-  //gcp setup
   apiURL = 'https://student-app-api-dot-sharkcell.ew.r.appspot.com/api'
 
   listTodos(): Observable<any> {
