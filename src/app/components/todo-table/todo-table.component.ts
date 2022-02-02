@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core'
 import { TodoTableDataSource } from './todo-table-data-source'
 import { TodosService } from '../../services/todos.service'
 import { ITodo } from '../../../interfaces/ITodo'
-import { v4 as uuidV4 } from 'uuid'
 import { EStatuses } from '../../../enums/EStatuses'
 import { ECategories } from '../../../enums/ECategories'
 import moment from 'moment'
+import { MatDialog } from '@angular/material/dialog'
+import { TodoFormComponent } from '../todo-form/todo-form.component'
 
 @Component({
   selector: 'app-todo-table',
@@ -15,7 +16,7 @@ import moment from 'moment'
 export class TodoTableComponent implements OnInit {
   dataToDisplay: ITodo[] = []
   dataSource!: TodoTableDataSource
-  constructor(private todosService: TodosService) {}
+  constructor(private todosService: TodosService, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.loadTodos()
@@ -39,19 +40,22 @@ export class TodoTableComponent implements OnInit {
     })
   }
 
-  addRandomTodo() {
-    const randomTodo = {
-      id: uuidV4(),
-      title: 'randomly created',
-      description: 'randomly described',
-      status: EStatuses.DONE,
-      category: ECategories.SMALL,
-      dateAdded: moment().toString(),
-      dateCompleted: moment().toString(),
-      assigned: { name: 'simon', email: 'simon@email.com' },
-      assignee: { name: 'mike', email: 'mike@email.com' },
+  createTodo() {
+    const nullTodo = {
+      title: null,
+      description: null,
+      status: null,
+      category: null,
+      dateAdded: null,
+      dateCompleted: null,
+      assigned: null,
+      assignee: null,
     }
-    this.todosService.createTodo(randomTodo).subscribe(() => {
+    const dialogRef = this.dialog.open(TodoFormComponent, {
+      data: { title: 'Create', todo: nullTodo },
+    })
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('Works????')
       this.loadTodos()
     })
   }
