@@ -10,6 +10,6 @@ export interface ITodo {
   category: ECategories
   status: EStatuses
   description: string
-  dateAdded: string
-  dateCompleted: string
+  dateAdded: string | null
+  dateCompleted: string | null
 }

@@ -7,6 +7,7 @@ import { ECategories } from '../../../enums/ECategories'
 import moment from 'moment'
 import { MatDialog } from '@angular/material/dialog'
 import { TodoFormComponent } from '../todo-form/todo-form.component'
+import { v4 as uuidv4 } from 'uuid'
 
 @Component({
   selector: 'app-todo-table',
@@ -54,8 +55,19 @@ export class TodoTableComponent implements OnInit {
     const dialogRef = this.dialog.open(TodoFormComponent, {
       data: { title: 'Create', todo: nullTodo },
     })
-    dialogRef.afterClosed().subscribe(() => {
-      console.log('Works????')
+    dialogRef.afterClosed().subscribe((result) => {
+      const todoToCreate: ITodo = {
+        assigned: result.assigned,
+        assignee: result.assignee,
+        category: result.category,
+        dateAdded: moment().toString(),
+        dateCompleted: null,
+        description: result.description,
+        status: EStatuses.ASSIGNED,
+        title: result.title,
+        id: uuidv4(),
+      }
+      console.log(todoToCreate)
       this.loadTodos()
     })
   }

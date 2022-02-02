@@ -44,4 +44,15 @@ export class TodoFormComponent implements OnInit {
       ],
     })
   }
+
+  onSubmit() {
+    const result = this.todoForm.getRawValue()
+    this.dialogRef.close({
+      title: result.title,
+      description: result.description,
+      assigned: result.assigned,
+      assignee: result.assignee,
+      category: result.category,
+    })
+  }
 }

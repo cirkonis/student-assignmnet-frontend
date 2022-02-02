@@ -1,6 +1,6 @@
 <div class="dialog-wrapper">
   <h1>{{data.title}} Todo</h1>
-  <form [formGroup]="todoForm" class="form-wrapper">
+  <form [formGroup]="todoForm" class="form-wrapper" (submit)="onSubmit()">
     <div>
     <mat-form-field>
       <mat-label> Title </mat-label>
@@ -58,6 +58,10 @@
           [required]="true"
         />
       </mat-form-field>
+    </div>
+    <div>
+    <button type="submit" mat-raised-button [disabled]="!todoForm.valid">{{data.title}} Todo</button>
+    <button mat-raised-button mat-dialog-close>Never Mind</button>
     </div>
   </form>
 </div>
